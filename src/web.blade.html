@@ -1,0 +1,483 @@
+<html lang="en">
+
+<head>
+    <!-- Google Tag Manager -->
+  <script>
+    (function(w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({
+        'gtm.start': new Date().getTime(),
+        event: 'gtm.js'
+      });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s),
+        dl = l != 'dataLayer' ? '&l=' + l : '';
+      j.async = true;
+      j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-5C5J96H');
+  </script>
+  <!-- End Google Tag Manager -->
+  <title>Investments</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+     <script src="{{ $script_link }}" id="fa-invest-now-launcher"></script>
+  <style type="text/css">
+    body {
+      background-color: black;
+    }
+    form-field holder {
+      width: 100% !important;
+    }
+    .modal-dialog {
+      width: auto;
+    }
+    
+    .button-container {
+      margin-top: 50px;
+      width: 1px;
+      height: 1px;
+      display: none;
+    }
+
+    .modal-header {
+      background-color: #000000;
+      color: white;
+    }
+
+    .modal-body {
+      background-color: #000000;
+    }
+
+    .modal-footer {
+      background-color: #000000;
+    }
+
+    .ssl_inner {
+      display: none;
+    }
+
+    .fa-times {
+      color: white;
+    }
+
+    .ng-binding {
+      color: white;
+    }
+
+    .alert {
+      display: none;
+    }
+
+    .popover {
+      color: #d4ab72;
+    }
+
+    #technology-by-fa {
+      color: white;
+    }
+
+    .gold-filled,
+    .gold-empty {
+      font-family: 'Poppins' !important;
+      font-size: 14px !important;
+      font-weight: bold !important;
+
+      width: auto;
+      margin: 0;
+      padding: 22px 38px !important;
+      display: block !important;
+      box-sizing: border-box;
+      text-align: center;
+
+      cursor: pointer;
+      border: none !important;
+      outline: none;
+      border-radius: 6px !important;
+      transition: 0.1s opacity linear;
+      background-image: none !important;
+    }
+
+    .gold-filled {
+      color: #000 !important;
+      background: #D4AB72 !important;
+      background-image: linear-gradient(to bottom, #D4AB72 0, #977c56 100%) !important;
+    }
+
+    .gold-empty {
+      color: #999696 !important;
+      background: #191919 !important;
+      background-image: linear-gradient(to bottom, #2b2b2b 0, #191919 100%) !important;
+      border: 2px solid #999696 !important;
+    }
+
+    .hide-button {
+      box-sizing: border-box;
+      width: 0;
+      height: 0;
+      padding: 0 !important;
+      margin: 0;
+      opacity: 0;
+      border: none !important;
+      overflow: hidden;
+    }
+    
+    #fa-invest-now-modal .modal-header .close {
+      opacity: .5;
+    }
+    
+    #fa-invest-now-modal .modal-header .close:hover {
+      opacity: .8;
+    }
+  </style>
+  
+  <script type="text/javascript">
+    //= new code added ==================================//
+    let originNext = null;
+    let originPrev = null;
+    let originClear = null;
+    let searchTick = null;
+    let eventsTick = null;
+    let customWatching = false;
+    let customWatched = false;
+    let angularModal = {};
+    const clickNext = () => {
+      if (originNext) {
+        console.log('Next clicked!');
+        startEventsTick();
+        return originNext.click();
+      }
+    }
+    const clickPrev = () => {
+      if (originPrev) {
+        console.log('Prev clicked!');
+        startEventsTick();
+        return originPrev.click();
+      }
+    }
+    const clickClear = () => {
+      if (originClear) {
+        console.log('Clear clicked!');
+        startEventsTick();
+        return originClear.click();
+      }
+    }
+
+    function hideButton(element) {
+      element?.classList.add('hide-button');
+      element.style.overflow = 'hidden';
+    }
+
+    
+    function restyleButton(element, style) {
+      if (element) {
+        element?.classList.add(style);
+      }
+    }
+
+  function seekAndStyle() {
+      const oldNext = document.querySelector('button[ng-if="modal.showNext()"]');
+      const oldPrev = document.querySelector('button[ng-if="modal.showPrev()"]');
+      const oldClear = document.querySelector('button[ng-if="modal.showClear()"]');
+      const oldCancel = document.querySelector('button[ng-click="modal.cancel()"]');
+      const progressBar = document.querySelector(`div[ng-style="{'width': modal.percentComplete() + '%' }"]`);
+      const isDoneExist = document.querySelector('button.done-button');
+      const goldFilled = 'gold-filled';
+      const goldEmpty = 'gold-empty';
+      if (progressBar) {
+        progressBar.style.backgroundImage = 'linear-gradient(to bottom, #D4AB72 0, #B19164 100%)';
+        progressBar.style.backgroundColor = '#D4AB72';
+        progressBar.style.color = "#000";
+      }
+      if (oldNext && !oldNext.classList.contains(goldFilled)) {
+        restyleButton(oldNext, goldFilled);
+                hideButton(oldNext);
+        originNext = oldNext;
+        angularModal.modal = {
+          ...angularModal?.modal,
+          showNext: () => !!originNext,
+        }
+      }
+      if (oldPrev && !oldPrev?.classList.contains(goldEmpty)) {
+        restyleButton(oldPrev, goldEmpty);
+              hideButton(oldPrev);
+        oldPrev.style.marginRight = '72px';
+        originPrev = oldPrev;
+        angularModal.modal = {
+          ...angularModal?.modal,
+          showPrev: () => !!originPrev,
+        }
+      }
+      if (oldClear && !oldClear?.classList.contains(goldEmpty)) {
+        restyleButton(oldClear, goldEmpty);
+              hideButton(oldClear);
+        originClear = oldClear;
+      }
+      seekAndHideClear();
+      seekClose();
+      if (angularModal.modal.finished && !isDoneExist) {
+        const buttonsWrapper = document.querySelector('div.modal-footer').children[0].children[0];
+        done = document.createElement('button');
+        done.innerHTML = 'Done';
+        done.className = "btn pull-right ng-scope gold-filled done-button";
+        done.setAttribute('type', 'button');
+        done.onclick = () => clickClose();
+        buttonsWrapper.appendChild(done);
+                clearInterval(angularModalTick);
+
+      }
+    }
+
+    function seekAndHideNext() {
+      const oldNext = document.querySelector('button[ng-if="modal.showNext()"]');
+      if (oldNext && !oldNext?.classList.contains('hide-button')) {
+        hideButton(oldNext);
+        originNext = oldNext;
+      }
+    }
+
+    function seekAndHidePrev() {
+      const oldPrev = document.querySelector('button[ng-if="modal.showPrev()"]');
+      if (oldPrev && !oldPrev?.classList.contains('hide-button')) {
+        hideButton(oldPrev);
+        originPrev = oldPrev;
+      }
+    }
+
+    function seekAndHideClear() {
+      const oldClear = document.querySelector('button[ng-if="modal.showClear()"]');
+      if (oldClear && !oldClear?.classList.contains('hide-button')) {
+        hideButton(oldClear);
+        originClear = oldClear;
+      }
+    }
+
+    function seekAndHideClose() {
+      const oldClose = document.querySelector('button[ng-click="modal.cancel()"]');
+      if (oldClose && !oldClose?.classList.contains('hide-button')) {
+        hideButton(oldClose);
+        originClose = oldClose;
+      }
+    }
+
+
+    function seekClose() {
+      const oldClose = document.querySelector('button[ng-click="modal.cancel()"]');
+      if (oldClose) {
+        originClose = oldClose;
+      }
+    }
+
+    function seekAndHide() {
+      seekAndHideNext();
+      seekAndHidePrev();
+      seekAndHideClear();
+      seekAndHideClose();
+    }
+
+
+    function seekAndHide() {
+      const oldNext = document.querySelector('button[ng-if="modal.showNext()"]');
+      const oldPrev = document.querySelector('button[ng-if="modal.showPrev()"]');
+      const oldClear = document.querySelector('button[ng-if="modal.showClear()"]');
+      const oldClose = document.querySelector('button[ng-click="modal.cancel()"]');
+      const progressBar = document.querySelector(`div[ng-style="{'width': modal.percentComplete() + '%' }"]`);
+      const popover = document.querySelector(`div[tooltip-animation-class="fade"]`);
+      const link = document.querySelector(`a[href="http://www.fundamerica.com"]`);
+      if (progressBar) {
+        progressBar.style.backgroundImage = 'linear-gradient(to bottom, #D4AB72 0, #B19164 100%)';
+        progressBar.style.backgroundColor = '#D4AB72';
+        progressBar.style.color = "#000";
+      }
+      if (popover) {
+        popover.style.backgroundColor = '#D4AB72';
+      }
+      if (link) {
+        link.style.color = "#D4AB72";
+      }
+      if (oldNext && !oldNext?.classList.contains('hide-button')) {
+        hideButton(oldNext);
+        originNext = oldNext;
+        angularModal.modal = {
+          ...angularModal?.modal,
+          showNext: () => !!originNext,
+        }
+      }
+      if (oldPrev && !oldPrev?.classList.contains('hide-button')) {
+        hideButton(oldPrev);
+        originPrev = oldPrev;
+        angularModal.modal = {
+          ...angularModal?.modal,
+          showPrev: () => !!originPrev,
+        }
+      }
+      if (oldClear && !oldClear?.classList.contains('hide-button')) {
+        hideButton(oldClear);
+        originClear = oldClear;
+      }
+      if (oldClose && !oldClose?.classList.contains('hide-button')) {
+        hideButton(oldClose);
+      }
+    }
+
+    function findAngularModal() {
+      let modalElement = document.querySelector('.invest-now-modal');
+      if (!modalElement) {
+        angularModal.modal = {
+          processing: true,
+          isLoading: true,
+          showNext: () => false,
+          showPrev: () => false,
+        }
+      } else {
+        // angularModal = angular.element(modalElement).scope();
+        checkModalState();
+        // clearInterval(angularModalTick);
+        console.log('modal is found');
+      }
+    }
+    
+    function pushGTM(eventName) {
+      if (eventName) {
+        dataLayer.push({'event': eventName});
+        console.log('push GTM event:', eventName);
+      } else {
+        console.log('wrong GTM event name, not pushed');
+      }
+    }
+    
+      function checkBothButtons() {
+      if (angularModal === {}) {
+        console.log("not ready");
+        return;
+      }
+      checkModalState();
+      const isProcessed = (!angularModal.modal.processing && !angularModal.modal.isLoading) || angularModal.modal.finished;
+      if (customWatching && !isProcessed) {
+        customWatched = true;
+      }
+      if (customWatching && customWatched && isProcessed) {
+        customWatched = false;
+        customWatching = false;
+        if (angularModal.modal.finished) {
+          console.log("event =======> Final");
+          logEvent("Final");
+          
+          pushGTM('event_name');
+          
+        } else if (angularModal.modal.showNext() && angularModal.modal.showPrev()) {
+          console.log("event =======> show Both");
+          logEvent("show Both");
+        } else if (angularModal.modal.showNext() && !angularModal.modal.showPrev()) {
+          console.log("event =======> show Next");
+          logEvent("show Next");
+        } else if (angularModal.modal.finished) {
+          console.log("event =======> Final");
+          logEvent("Final");
+
+          pushGTM('event_name');
+          
+        }
+        clearInterval(eventsTick);
+      } else {
+        console.log("page is in processing");
+      }
+    }
+
+    function checkModalState() {
+      const spinner = document.querySelector('.loading-spinner');
+      const progressBar = document.querySelector(`div[ng-style="{'width': modal.percentComplete() + '%' }"]`);
+      
+      angularModal.modal = {
+        processing: !spinner?.classList.contains('ng-hide') || spinner?.classList.length > 2,
+        isLoading: originNext?.childElementCount || originPrev?.childElementCount,
+        showNext: () => !!originNext,
+        showPrev: () => !!originPrev,
+        finished: progressBar?.innerText === 'Finished!',
+      }
+  
+    }
+
+    function startEventsTick() {
+      eventsTick = setInterval(checkBothButtons, 100);
+      customWatching = true;
+      customWatched = false;
+    }
+
+    function clearForm() {
+      document.dispatchEvent(clearEvent);
+    }
+
+    function ready() {
+      console.log("document.DOMContentLoaded");
+      const storageItem = 'ls.invest_now.sandbox';
+      localStorage.removeItem(storageItem);
+    }
+    document.addEventListener("DOMContentLoaded", ready);
+    //= end of new code added ==================================//
+    function logEvent(eventName) {
+      if (window.Android) {
+        Android.logEvent(eventName);
+      }
+      if (
+        window.webkit &&
+        window.webkit.messageHandlers &&
+        window.webkit.messageHandlers.iosListener
+      ) {
+        window.webkit.messageHandlers.iosListener.postMessage(eventName);
+      }
+      window.parent.postMessage(eventName, '*')
+    }
+    var autofillEvent = document.createEvent('Event');
+    autofillEvent.initEvent('fa.investnow.autofill', true, false);
+    autofillEvent.investor = {
+      "type": 'person',
+      "name": '{{ $user->full_name }}',
+      "amount": '{{ $tier->value }}',
+      "email": '{{ $user->email }}',
+    };
+    var clearEvent = document.createEvent('Event');
+    clearEvent.initEvent('fa.investnow.clear', true, false);
+    // Invest Now button click
+    window.onload = function() {
+      document.getElementById("invest-now-button").click();
+      // document.dispatchEvent(clearEvent);
+      console.log('window.onload');
+      buttonsTick = setInterval(seekAndStyle, 100);
+      angularModalTick = setInterval(findAngularModal, 133);
+      startEventsTick();
+    };
+    // Event listeners
+    document.addEventListener('fa.investnow.close', function(e) {
+      document.dispatchEvent(clearEvent);
+      logEvent('Close');
+      console.log("logEvent('Close');");
+    });
+    document.addEventListener('fa.investnow.open', function(e) {
+      document.dispatchEvent(clearEvent);
+      document.dispatchEvent(autofillEvent);
+      logEvent('Open');
+      console.log("logEvent('Open');");
+    });
+    document.addEventListener('fa.investnow.success', function(e) {
+      logEvent('Success')
+    });
+  </script>
+
+</head>
+
+<body>
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5C5J96H" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <div class="button-container">
+    <button
+        type="button"
+        data-fa-invest-now="{{ $tier->offer_id }}"
+        data-fa-invest-now-data='{"tierId":"{{ $tier->id }}","userId":"{{ $user->id }}"}'
+        class="fa-invest-now-btn fa-invest-now-btn-4"
+        id="invest-now-button">
+      Invest Now
+    </button>
+  </div>
+</body>
+</html>
