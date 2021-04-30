@@ -198,6 +198,11 @@
         progressBar.style.backgroundColor = '#D4AB72';
         progressBar.style.color = "#000";
       }
+      
+      if (progressBar?.attributes?.['ng-aria-valuenow']?.value === '100') {
+        hideButton(document.querySelector('.progress'));
+      }
+
       if (oldNext && !oldNext.classList.contains(goldFilled)) {
         restyleButton(oldNext, goldFilled);
                 // hideButton(oldNext);
