@@ -21,7 +21,7 @@
   <!-- End Google Tag Manager -->
   <title>Investments</title>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
       <!-- <script src="{{ $script_link }}" id="fa-invest-now-launcher"></script> -->
       <!-- <script src="https://my-sandbox.fundamerica.com/widgets/invest_now.min.js" id="fa-invest-now-launcher"></script> -->
       <script src="https://my.fundamerica.com/widgets/invest_now.min.js" id="fa-invest-now-launcher"></script>
@@ -169,6 +169,13 @@
         console.log('Clear clicked!');
         startEventsTick();
         return originClear.click();
+      }
+    }
+    const clickClose = () => {
+      if (originClose) {
+        console.log('Close clicked!');
+        startEventsTick();
+        return originClose.click();
       }
     }
 
